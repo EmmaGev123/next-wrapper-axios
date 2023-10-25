@@ -2,7 +2,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createWrapper } from 'next-redux-wrapper';
-import productReducer from '@/pages/feauters/product/productSlice';
+import productReducer from '@/feauters/product/productSlice';
 export const store = () => configureStore({
   reducer: {
     product: productReducer

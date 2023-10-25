@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { wrapper } from '@/app/store'
-import { getCategoriesThunk, getProductByCategoryThunk, getProductsThunk } from './feauters/product/productAPI'
-import { getCategories, getProduct, selectProduct } from './feauters/product/productSlice'
+import { getCategoriesThunk, getProductByCategoryThunk, getProductsByLimitThunk, getProductsThunk } from '../feauters/product/productAPI'
+import { getCategories, getProduct, selectProduct } from '../feauters/product/productSlice'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import Link from 'next/link'
 
@@ -17,6 +17,11 @@ export default function Home() {
 
   return (
     <div>
+      <input type="number" onChange={ async (e)=>{
+        const data=await dispatch(getProductsByLimitThunk(+e.target.value)).unwrap()
+        dispatch(getProduct(data))
+        
+      }} />
       <select onChange={async (e) => {
         const data = await dispatch(getProductByCategoryThunk(e.target.value)).unwrap()
         console.log(data);
@@ -30,7 +35,7 @@ export default function Home() {
             })
           }
       </select>
-       <table>
+       <table className='table table-warning'>
           <thead>
              <tr>
                 <th>Title</th>
@@ -48,7 +53,7 @@ export default function Home() {
                        <td>{elm.title}</td>
                        <td><img src={elm.image} width={150}/></td>
                        <td>{elm.category}</td>
-                       <td><Link href={"products/"+elm.id}>See more</Link></td>
+                       <td><Link href={"product/"+elm.id}>See more</Link></td>
                        <td><button>x</button></td>
                     </tr>
                   )
